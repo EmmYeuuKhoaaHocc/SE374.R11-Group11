@@ -77,7 +77,7 @@ def _apply_cli_args() -> None:
 if __name__ == "__main__":
     _apply_cli_args()
     uvicorn.run(
-        "main:app",
+        "main:app" if settings.DEBUG else app,
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG
