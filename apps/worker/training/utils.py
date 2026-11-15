@@ -280,17 +280,17 @@ def run_inference_on_folder(
     device: Optional[torch.device] = None
 ) -> List[Path]:
     """
-    Abstract inference runner:
-    1. Scans data_dir for cases with FLAIR, T1, T1ce, T2 sequences
-    2. Runs sliding-window 3D inference and connected-component postprocessing
-    3. Saves final segmentation volume to predict_dir as .nii.gz maintaining spatial affine
+    Abstract sequential inference runner:
+    1. Recursively scans data_dir for cases with FLAIR, T1, T1ce, T2 sequences
+    2. Runs sliding-window 3D inference and connected-component postprocessing sequentially
+    3. Saves final segmentation volumes to predict_dir as <case_id>_seg.nii.gz
     """
     data_dir = Path(data_dir)
     predict_dir = Path(predict_dir)
     predict_dir.mkdir(parents=True, exist_ok=True)
 
-    # Discover cases by matching filenames ending with _flair, _t1, _t1ce, _t2
-    all_nii = list(data_dir.glob("*.nii")) + list(data_dir.glob("*.nii.gz"))
+    # Recursively discover cases from flat files or subdirectories
+    all_nii = sorted(list(data_dir.rglob("*.nii")) + list(data_dir.rglob("*.nii.gz")))
     cases: Dict[str, Dict[str, Path]] = {}
 
     for p in all_nii:
@@ -303,13 +303,20 @@ def run_inference_on_folder(
                 cases[case_id] = {}
             cases[case_id][modality] = p
 
-    saved_outputs: List[Path] = []
-    for case_id, modalities in cases.items():
-        if not all(k in modalities for k in ["flair", "t1", "t1ce", "t2"]):
-            print(f"Skipping incomplete case '{case_id}': missing one of [flair, t1, t1ce, t2]")
-            continue
+    # Filter only cases with all 4 required sequences
+    valid_cases = {
+        cid: mods for cid, mods in sorted(cases.items())
+        if all(k in mods for k in ["flair", "t1", "t1ce", "t2"])
+    }
 
-        print(f"Processing inference for case: {case_id}...")
+    total = len(valid_cases)
+    print(f"Discovered {total} valid cases in '{data_dir}' to process sequentially:")
+    for cid in valid_cases:
+        print(f"  • {cid}")
+
+    saved_outputs: List[Path] = []
+    for idx, (case_id, modalities) in enumerate(valid_cases.items(), start=1):
+        print(f"\n[{idx}/{total}] Running inference for case: {case_id}...")
         ref_nii = nib.load(str(modalities["flair"]))
         affine = ref_nii.affine
         header = ref_nii.header
@@ -333,7 +340,8 @@ def run_inference_on_folder(
         out_path = predict_dir / f"{case_id}_seg.nii.gz"
         out_nii = nib.Nifti1Image(spatial_pred, affine, header)
         nib.save(out_nii, str(out_path))
-        print(f"Prediction saved to: {out_path}")
+        print(f"[{idx}/{total}] Saved segmentation mask to: {out_path}")
         saved_outputs.append(out_path)
 
+    print(f"\nInference completed successfully for all {len(saved_outputs)} cases. Results saved in '{predict_dir}'.")
     return saved_outputs
