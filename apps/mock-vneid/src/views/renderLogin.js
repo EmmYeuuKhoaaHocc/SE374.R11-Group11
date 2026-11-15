@@ -3,7 +3,15 @@ const path = require('path');
 
 const loginHtmlTemplate = fs.readFileSync(path.resolve(__dirname, 'login.html'), 'utf8');
 
-function renderLoginPage({ clientId, redirectUri, state, scope, nonce, citizens, practitioners, facilities, error }) {
+function escapeHtmlAttr(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function renderLoginPage({ clientId, redirectUri, state, scope, nonce, codeChallenge, codeChallengeMethod, citizens, practitioners, facilities, error }) {
   const facList = facilities || [];
   const dropdownItems = citizens.map(c => {
     const pract = practitioners.find(p => p.cccd === c.cccd);
@@ -22,15 +30,17 @@ function renderLoginPage({ clientId, redirectUri, state, scope, nonce, citizens,
   }).join('');
 
   const errorSection = error
-    ? `<div class="error-box">${error}</div>`
+    ? `<div class="error-box">${escapeHtmlAttr(error)}</div>`
     : '';
 
   return loginHtmlTemplate
-    .replace('{{CLIENT_ID}}', clientId || '')
-    .replace('{{REDIRECT_URI}}', redirectUri || '')
-    .replace('{{STATE}}', state || '')
-    .replace('{{SCOPE}}', scope || '')
-    .replace('{{NONCE}}', nonce || '')
+    .replace('{{CLIENT_ID}}', escapeHtmlAttr(clientId))
+    .replace('{{REDIRECT_URI}}', escapeHtmlAttr(redirectUri))
+    .replace('{{STATE}}', escapeHtmlAttr(state))
+    .replace('{{SCOPE}}', escapeHtmlAttr(scope))
+    .replace('{{NONCE}}', escapeHtmlAttr(nonce))
+    .replace('{{CODE_CHALLENGE}}', escapeHtmlAttr(codeChallenge))
+    .replace('{{CODE_CHALLENGE_METHOD}}', escapeHtmlAttr(codeChallengeMethod))
     .replace('{{ERROR_SECTION}}', errorSection)
     .replace('{{DROPDOWN_ITEMS}}', dropdownItems);
 }

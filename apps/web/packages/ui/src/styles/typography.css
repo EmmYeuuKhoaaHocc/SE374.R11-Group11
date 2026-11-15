@@ -1,0 +1,60 @@
+:root {
+  font-family: var(--ns-font-family);
+  color-scheme: light;
+  font-size: 100%;
+  font-weight: var(--ns-font-weight-regular);
+  line-height: var(--ns-line-height-body);
+  color: var(--ns-color-text);
+  background: var(--ns-color-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: var(--ns-color-text);
+  background: var(--ns-color-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--ns-font-weight-semibold);
+  line-height: var(--ns-line-height-tight);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--ns-font-size-2xl);
+}
+
+h2 {
+  font-size: var(--ns-font-size-xl);
+}
+
+h3 {
+  font-size: var(--ns-font-size-lg);
+}
+
+p {
+  margin: 0;
+}
+
+small {
+  font-size: var(--ns-font-size-sm);
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--ns-font-family-mono);
+}
+
+a {
+  color: var(--ns-color-primary);
+}

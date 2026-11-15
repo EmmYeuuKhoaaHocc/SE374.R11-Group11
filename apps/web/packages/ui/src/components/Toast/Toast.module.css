@@ -1,0 +1,114 @@
+.viewport {
+  position: fixed;
+  z-index: var(--ns-z-toast);
+  inset-block-start: var(--ns-space-4);
+  inset-inline-end: var(--ns-space-4);
+  display: grid;
+  gap: var(--ns-space-3);
+  inline-size: min(26rem, calc(100vw - var(--ns-space-8)));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.toast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--ns-space-4);
+  border: 1px solid var(--ns-color-border);
+  border-radius: var(--ns-radius-lg);
+  padding: var(--ns-space-4);
+  color: var(--ns-color-text);
+  background: var(--ns-color-surface);
+  box-shadow: var(--ns-shadow-lg);
+  pointer-events: auto;
+  animation: toast-in var(--ns-duration-normal) var(--ns-ease-standard);
+}
+
+.success {
+  border-color: var(--ns-color-success);
+  background: var(--ns-color-success-soft);
+}
+
+.warning {
+  border-color: var(--ns-color-warning);
+  background: var(--ns-color-warning-soft);
+}
+
+.destructive {
+  border-color: var(--ns-color-danger);
+  color: var(--ns-color-danger);
+  background: var(--ns-color-danger-soft);
+}
+
+.content {
+  display: grid;
+  gap: var(--ns-space-1);
+  min-inline-size: 0;
+}
+
+.title,
+.description {
+  margin: 0;
+}
+
+.title {
+  font-size: var(--ns-font-size-sm);
+  font-weight: var(--ns-font-weight-semibold);
+}
+
+.description {
+  color: var(--ns-color-text-muted);
+  font-size: var(--ns-font-size-sm);
+}
+
+.closeButton {
+  display: inline-grid;
+  inline-size: var(--ns-touch-target-min);
+  block-size: var(--ns-touch-target-min);
+  place-items: center;
+  margin: calc(var(--ns-space-2) * -1);
+  border: 0;
+  border-radius: var(--ns-radius-sm);
+  color: var(--ns-color-text-subtle);
+  background: transparent;
+  font-size: var(--ns-font-size-xl);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  color: var(--ns-color-text);
+  background: var(--ns-color-surface-muted);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--ns-color-focus-ring);
+  outline-offset: 2px;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 40rem) {
+  .viewport {
+    inset-inline: var(--ns-space-4);
+    inline-size: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}

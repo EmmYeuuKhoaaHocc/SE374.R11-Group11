@@ -3,6 +3,11 @@ const config = require('./config');
 
 const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
 const exportedJwk = publicKey.export({ format: 'jwk' });
+const kid = crypto
+  .createHash('sha256')
+  .update(JSON.stringify({ e: exportedJwk.e, kty: exportedJwk.kty, n: exportedJwk.n }))
+  .digest('base64url')
+  .slice(0, 16);
 
 const publicJwk = {
   kty: exportedJwk.kty,
@@ -10,7 +15,7 @@ const publicJwk = {
   e: exportedJwk.e,
   alg: 'RS256',
   use: 'sig',
-  kid: 'vneid-mock-key-1'
+  kid
 };
 
 function getJwks() {

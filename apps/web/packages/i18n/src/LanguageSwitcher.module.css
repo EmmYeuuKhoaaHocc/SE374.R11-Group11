@@ -1,0 +1,55 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ns-space-2, 0.5rem);
+  color: var(--ns-color-text-muted, #737373);
+  font-size: var(--ns-font-size-sm, 0.875rem);
+  white-space: nowrap;
+}
+
+.selectWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.selectWrap::after {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0.85rem;
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  color: var(--ns-color-text, #171717);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-65%) rotate(45deg);
+}
+
+.selectWrap select {
+  min-block-size: 2.25rem;
+  min-inline-size: 7.5rem;
+  appearance: none;
+  border: 1px solid var(--ns-color-border-strong, #a3a3a3);
+  border-radius: var(--ns-radius-md, 6px);
+  padding: var(--ns-space-2, 0.5rem) 2.25rem var(--ns-space-2, 0.5rem) var(--ns-space-3, 0.75rem);
+  color: var(--ns-color-text, #171717);
+  background: var(--ns-color-surface, #ffffff);
+  font: inherit;
+  line-height: 1.25;
+}
+
+.selectWrap select:focus-visible {
+  outline: 2px solid var(--ns-color-focus-ring, #0066cc);
+  outline-offset: 2px;
+}
+
+@media (max-width: 48rem) {
+  .root > span:first-child {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}

@@ -12,7 +12,16 @@ const practitioners = JSON.parse(fs.readFileSync(practitionersPath, 'utf8'));
 
 const authCodes = new Map();
 
-function createAuthCode({ citizen, clientId, redirectUri, scope, state, nonce }) {
+function createAuthCode({
+  citizen,
+  clientId,
+  redirectUri,
+  scope,
+  state,
+  nonce,
+  codeChallenge,
+  codeChallengeMethod
+}) {
   const code = crypto.randomBytes(24).toString('hex');
   const record = {
     code,
@@ -22,6 +31,8 @@ function createAuthCode({ citizen, clientId, redirectUri, scope, state, nonce })
     scope: scope || 'openid profile cccd bhyt',
     state: state || '',
     nonce: nonce || '',
+    codeChallenge: codeChallenge || '',
+    codeChallengeMethod: codeChallengeMethod || '',
     expiresAt: Date.now() + 10 * 60 * 1000
   };
   authCodes.set(code, record);
@@ -38,6 +49,25 @@ function consumeAuthCode(code) {
     return null;
   }
   return record;
+}
+
+function verifyPkce(record, codeVerifier) {
+  if (!record || !record.codeChallenge || record.codeChallengeMethod !== 'S256') {
+    return false;
+  }
+  if (typeof codeVerifier !== 'string' || codeVerifier.length < 43 || codeVerifier.length > 128) {
+    return false;
+  }
+  const expectedChallenge = crypto
+    .createHash('sha256')
+    .update(codeVerifier, 'ascii')
+    .digest('base64url');
+  const actualBuf = Buffer.from(expectedChallenge, 'utf8');
+  const expectedBuf = Buffer.from(record.codeChallenge, 'utf8');
+  if (actualBuf.length !== expectedBuf.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(actualBuf, expectedBuf);
 }
 
 function findCitizen(cccd) {
@@ -71,6 +101,7 @@ function getPractitioners() {
 module.exports = {
   createAuthCode,
   consumeAuthCode,
+  verifyPkce,
   findCitizen,
   findPractitioner,
   findPractitionerByCccd,

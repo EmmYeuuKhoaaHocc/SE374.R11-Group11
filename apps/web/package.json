@@ -1,0 +1,27 @@
+{
+  "name": "neuroscan-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NeuroScan Frontend Monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "npm run dev -w portal",
+    "build:portal": "npm run build -w portal",
+    "lint": "npm run lint -w @neuroscan/api-client && npm run lint -w @neuroscan/i18n && npm run lint -w @neuroscan/ui && npm run lint -w portal",
+    "typecheck": "npm run typecheck -w @neuroscan/api-client && npm run typecheck -w @neuroscan/i18n && npm run typecheck -w @neuroscan/ui && npm run typecheck -w portal",
+    "build": "npm run build:portal",
+    "test": "npm run test -w @neuroscan/api-client && npm run test -w @neuroscan/i18n && npm run test -w @neuroscan/ui && npm run test -w portal",
+    "test:api": "npm run test -w @neuroscan/api-client"
+  },
+  "dependencies": {
+    "lucide-react": "^1.57.0"
+  }
+}
