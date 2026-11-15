@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, FileResponse
 
 from .config import settings
 from .inference import inference_engine
+from .mq_consumer import mq_consumer
 from .schemas import HealthResponse
 
 logger = logging.getLogger("uvicorn.error")
@@ -28,7 +29,10 @@ async def health_check():
         status="healthy" if inference_engine.model is not None else "degraded",
         model_loaded=inference_engine.model is not None,
         device=str(inference_engine.device),
-        weights_path=settings.MODEL_WEIGHTS_PATH
+        weights_path=settings.MODEL_WEIGHTS_PATH,
+        rabbitmq_enabled=mq_consumer.is_enabled,
+        rabbitmq_connected=mq_consumer.connected,
+        rabbitmq_error=mq_consumer.last_error,
     )
 
 @router.post("/api/v1/inference")

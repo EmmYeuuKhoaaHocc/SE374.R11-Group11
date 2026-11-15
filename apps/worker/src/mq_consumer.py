@@ -23,6 +23,10 @@ class RabbitMqInferenceConsumer:
         self._exchange: Optional[aio_pika.abc.AbstractExchange] = None
         self._consumer_tag: Optional[str] = None
         self._queue: Optional[aio_pika.abc.AbstractQueue] = None
+        self._connect_task: Optional[asyncio.Task] = None
+        self._stopping = False
+        self.connected = False
+        self.last_error: Optional[str] = None
 
     @property
     def is_enabled(self) -> bool:
@@ -39,44 +43,68 @@ class RabbitMqInferenceConsumer:
                 "Pass credentials via CLI flags (--rmq-user / --rmq-pass) or environment variables."
             )
 
-        logger.info(
-            "Connecting worker to RabbitMQ %s:%s (vhost=%s, exchange=%s)",
-            settings.RABBITMQ_HOST,
-            settings.RABBITMQ_PORT,
-            settings.RABBITMQ_VHOST,
-            settings.RABBITMQ_EXCHANGE,
-        )
+        self._stopping = False
+        self._connect_task = asyncio.create_task(self._connect_and_consume_loop())
 
-        self._connection = await aio_pika.connect_robust(
-            host=settings.RABBITMQ_HOST,
-            port=settings.RABBITMQ_PORT,
-            login=settings.RABBITMQ_USER,
-            password=settings.RABBITMQ_PASS,
-            virtualhost=settings.RABBITMQ_VHOST,
-            heartbeat=60,
-        )
-        self._channel = await self._connection.channel()
-        await self._channel.set_qos(prefetch_count=1)
+    async def _connect_and_consume_loop(self) -> None:
+        while not self._stopping:
+            try:
+                logger.info(
+                    "Connecting worker to RabbitMQ %s:%s (vhost=%s, exchange=%s)",
+                    settings.RABBITMQ_HOST,
+                    settings.RABBITMQ_PORT,
+                    settings.RABBITMQ_VHOST,
+                    settings.RABBITMQ_EXCHANGE,
+                )
 
-        self._exchange = await self._channel.declare_exchange(
-            settings.RABBITMQ_EXCHANGE,
-            ExchangeType.TOPIC,
-            durable=True,
-        )
+                self._connection = await aio_pika.connect_robust(
+                    host=settings.RABBITMQ_HOST,
+                    port=settings.RABBITMQ_PORT,
+                    login=settings.RABBITMQ_USER,
+                    password=settings.RABBITMQ_PASS,
+                    virtualhost=settings.RABBITMQ_VHOST,
+                    heartbeat=60,
+                    timeout=15,
+                )
+                self._channel = await self._connection.channel()
+                await self._channel.set_qos(prefetch_count=1)
 
-        self._queue = await self._channel.declare_queue(
-            settings.RABBITMQ_REQUEST_QUEUE,
-            durable=True,
-        )
-        await self._queue.bind(self._exchange, routing_key=settings.RABBITMQ_REQUEST_ROUTING_KEY)
-        self._consumer_tag = await self._queue.consume(self._on_message)
-        logger.info(
-            "RabbitMQ worker listening on queue '%s' bound to '%s'",
-            settings.RABBITMQ_REQUEST_QUEUE,
-            settings.RABBITMQ_REQUEST_ROUTING_KEY,
-        )
+                self._exchange = await self._channel.declare_exchange(
+                    settings.RABBITMQ_EXCHANGE,
+                    ExchangeType.TOPIC,
+                    durable=True,
+                )
+
+                self._queue = await self._channel.declare_queue(
+                    settings.RABBITMQ_REQUEST_QUEUE,
+                    durable=True,
+                )
+                await self._queue.bind(self._exchange, routing_key=settings.RABBITMQ_REQUEST_ROUTING_KEY)
+                self._consumer_tag = await self._queue.consume(self._on_message)
+                self.connected = True
+                self.last_error = None
+                logger.info(
+                    "RabbitMQ worker listening on queue '%s' bound to '%s'",
+                    settings.RABBITMQ_REQUEST_QUEUE,
+                    settings.RABBITMQ_REQUEST_ROUTING_KEY,
+                )
+                return
+            except asyncio.CancelledError:
+                raise
+            except Exception as exc:
+                self.connected = False
+                self.last_error = str(exc)
+                logger.warning("RabbitMQ worker connection failed (%s); retrying in 5s...", exc)
+                await asyncio.sleep(5)
 
     async def stop(self) -> None:
+        self._stopping = True
+        if self._connect_task is not None and not self._connect_task.done():
+            self._connect_task.cancel()
+            try:
+                await self._connect_task
+            except asyncio.CancelledError:
+                pass
         try:
             if self._queue is not None and self._consumer_tag is not None:
                 await self._queue.cancel(self._consumer_tag)
@@ -88,6 +116,8 @@ class RabbitMqInferenceConsumer:
         except Exception:
             logger.exception("Failed closing RabbitMQ connection")
         finally:
+            self.connected = False
+            self._connect_task = None
             self._consumer_tag = None
             self._queue = None
             self._exchange = None
