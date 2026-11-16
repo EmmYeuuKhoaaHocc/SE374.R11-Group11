@@ -12,8 +12,6 @@ class Settings(BaseSettings):
     PATCH_HEIGHT: int = 128
     PATCH_WIDTH: int = 128
     OVERLAP: float = 0.5
-    SECOND_LCC_MIN_VOXELS: int = 100
-    ET_MIN_VOXELS: int = 50
     MC_NUM_PASSES: int = 20
     MC_BATCH_SIZE: int = 5
     QUANTILE_CHUNK_SIZE: int = 250000
@@ -28,7 +26,8 @@ class Settings(BaseSettings):
     RABBITMQ_EXCHANGE: str = "neuroscan.inference"
     RABBITMQ_REQUEST_QUEUE: str = "neuroscan.inference.requests"
     RABBITMQ_REQUEST_ROUTING_KEY: str = "inference.request"
-    RABBITMQ_MAX_MESSAGE_SIZE_BYTES: int = 536870912
+    RABBITMQ_MAX_RETRIES: int = 3
+    RABBITMQ_RETRY_DELAY_MS: int = 5000
 
     model_config = {
         "env_file": ".env",
