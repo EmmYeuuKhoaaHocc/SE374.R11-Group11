@@ -1,0 +1,35 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 1.5rem;
+  border-radius: var(--ns-radius-full);
+  padding-inline: var(--ns-space-2);
+  font-size: var(--ns-font-size-xs);
+  font-weight: var(--ns-font-weight-medium);
+  line-height: var(--ns-line-height-tight);
+}
+
+.neutral {
+  color: var(--ns-color-text);
+  background: var(--ns-color-surface-muted);
+}
+
+.info {
+  color: var(--ns-color-info);
+  background: var(--ns-color-info-soft);
+}
+
+.success {
+  color: var(--ns-color-success);
+  background: var(--ns-color-success-soft);
+}
+
+.warning {
+  color: var(--ns-color-warning);
+  background: var(--ns-color-warning-soft);
+}
+
+.error {
+  color: var(--ns-color-danger);
+  background: var(--ns-color-danger-soft);
+}

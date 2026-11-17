@@ -1,0 +1,131 @@
+:root {
+  --ns-palette-white: #ffffff;
+  --ns-palette-black: #000000;
+  --ns-palette-neutral-50: #f9f9f9;
+  --ns-palette-neutral-100: #f1f1f1;
+  --ns-palette-neutral-200: #e7e7e7;
+  --ns-palette-neutral-300: #d9d3d3;
+  --ns-palette-neutral-400: #b8b8b8;
+  --ns-palette-neutral-500: #a3a3a3;
+  --ns-palette-neutral-600: #737373;
+  --ns-palette-neutral-700: #525252;
+  --ns-palette-neutral-800: #404040;
+  --ns-palette-neutral-900: #262626;
+  --ns-palette-blue-50: #eff6ff;
+  --ns-palette-blue-600: #2563eb;
+  --ns-palette-blue-700: #1d4ed8;
+  --ns-palette-blue-800: #1e40af;
+  --ns-palette-red-50: #fef2f2;
+  --ns-palette-red-700: #b91c1c;
+  --ns-palette-green-50: #f0fdf4;
+  --ns-palette-green-700: #15803d;
+  --ns-palette-amber-50: #fffbeb;
+  --ns-palette-amber-800: #92400e;
+  --ns-palette-sky-50: #f0f9ff;
+  --ns-palette-sky-700: #0369a1;
+  --ns-palette-navy: #262626;
+  --ns-palette-muted-navy: #737373;
+  --ns-palette-pastel-green: #737373;
+
+  --ns-color-bg: #f9f9f9;
+  --ns-color-surface: var(--ns-palette-white);
+  --ns-color-surface-muted: #f1f1f1;
+  --ns-color-surface-subtle: #f9f9f9;
+  --ns-color-surface-hover: #e7e7e7;
+  --ns-color-bg-muted: #f1f1f1;
+  --ns-color-text: #262626;
+  --ns-color-text-side-bar-muted: var(--ns-palette-muted-navy);
+  --ns-color-text-side-bar-active: #262626;
+  --ns-color-text-muted: #737373;
+  --ns-color-text-subtle: var(--ns-palette-neutral-500);
+  --ns-color-text-inverse: var(--ns-palette-white);
+  --ns-color-text-navigation-group-label: var(--ns-palette-pastel-green);
+
+  --ns-color-primary: #262626;
+  --ns-color-primary-hover: #404040;
+  --ns-color-primary-active: #171717;
+  --ns-color-on-primary: var(--ns-palette-white);
+  --ns-color-primary-soft: #f1f1f1;
+  --ns-color-danger: var(--ns-palette-red-700);
+  --ns-color-on-danger: var(--ns-palette-white);
+  --ns-color-danger-soft: var(--ns-palette-red-50);
+  --ns-color-success: var(--ns-palette-green-700);
+  --ns-color-on-success: var(--ns-palette-white);
+  --ns-color-success-soft: var(--ns-palette-green-50);
+  --ns-color-warning: var(--ns-palette-amber-800);
+  --ns-color-on-warning: var(--ns-palette-white);
+  --ns-color-warning-soft: var(--ns-palette-amber-50);
+  --ns-color-info: var(--ns-palette-sky-700);
+  --ns-color-on-info: var(--ns-palette-white);
+  --ns-color-info-soft: var(--ns-palette-sky-50);
+
+  --ns-color-border: #d9d3d3;
+  --ns-color-border-strong: var(--ns-palette-neutral-400);
+  --ns-color-border-hover: #b8b8b8;
+  --ns-color-border-subtle: #e7e7e7;
+  --ns-color-divider: #e7e7e7;
+  --ns-color-focus-ring: var(--ns-palette-blue-600);
+  --ns-color-focus-ring-soft: rgb(29 78 216 / 12%);
+  --ns-color-danger-ring: rgb(185 28 28 / 12%);
+  --ns-color-overlay: rgb(23 23 23 / 72%);
+  --ns-color-disabled-surface: var(--ns-palette-neutral-100);
+  --ns-color-disabled-border: var(--ns-palette-neutral-200);
+  --ns-color-disabled-text: var(--ns-palette-neutral-500);
+
+  --ns-color-bg-nav-link-active: rgb(217 217 217 / 50%);
+
+  --ns-space-1: 0.25rem;
+  --ns-space-2: 0.5rem;
+  --ns-space-3: 0.75rem;
+  --ns-space-4: 1rem;
+  --ns-space-5: 1.25rem;
+  --ns-space-6: 1.5rem;
+  --ns-space-7: 1.75rem;
+  --ns-space-8: 2rem;
+  --ns-space-9: 2.25rem;
+  --ns-space-10: 2.5rem;
+  --ns-space-11: 2.75rem;
+  --ns-space-12: 3rem;
+
+  --ns-font-family:
+    "Geist Variable", Geist, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ns-font-family-mono:
+    ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+
+  --ns-font-size-xs-extra: 0.625rem;
+  --ns-font-size-xs: 0.75rem;
+  --ns-font-size-sm: 0.875rem;
+  --ns-font-size-md: 1rem;
+  --ns-font-size-lg: 1.125rem;
+  --ns-font-size-xl: 1.25rem;
+  --ns-font-size-2xl: 1.5rem;
+  --ns-font-size-3xl: 1.875rem;
+  --ns-line-height-body: 1.5;
+  --ns-line-height-tight: 1.25;
+  --ns-font-weight-regular: 400;
+  --ns-font-weight-medium: 500;
+  --ns-font-weight-semibold: 600;
+  --ns-font-weight-bold: 700;
+
+  --ns-radius-sm: 0.25rem;
+  --ns-radius-md: 0.5rem;
+  --ns-radius-lg: 0.75rem;
+  --ns-radius-xl: 1rem;
+  --ns-radius-full: 9999px;
+  --ns-control-height-sm: 2rem;
+  --ns-control-height-md: 2.5rem;
+  --ns-control-height-lg: 3rem;
+  --ns-touch-target-min: 2.5rem;
+  --ns-shadow-sm: 0 1px 3px rgb(0 0 0 / 10%);
+  --ns-shadow-md: 0 4px 8px rgb(0 0 0 / 12%);
+  --ns-shadow-lg: 0 10px 24px rgb(0 0 0 / 14%);
+  --ns-duration-fast: 150ms;
+  --ns-duration-normal: 200ms;
+  --ns-ease-standard: ease;
+  --ns-breakpoint-sm: 40rem;
+  --ns-breakpoint-md: 52.5rem;
+  --ns-breakpoint-lg: 64rem;
+  --ns-z-dropdown: 1000;
+  --ns-z-overlay: 1100;
+  --ns-z-toast: 1200;
+}

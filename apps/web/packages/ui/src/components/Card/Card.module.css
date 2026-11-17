@@ -1,0 +1,35 @@
+.root {
+  display: grid;
+  gap: var(--ns-space-4);
+  border: 1px solid var(--ns-color-border);
+  border-radius: var(--ns-radius-lg);
+  padding: var(--ns-space-5);
+  background: var(--ns-color-surface);
+  box-shadow: none;
+}
+
+.header,
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ns-space-2);
+}
+
+.headingBlock {
+  display: grid;
+  gap: var(--ns-space-1);
+}
+
+.heading {
+  font-size: var(--ns-font-size-xl);
+  letter-spacing: -0.015em;
+}
+
+.description {
+  color: var(--ns-color-text-muted);
+}
+
+.content {
+  min-inline-size: 0;
+}

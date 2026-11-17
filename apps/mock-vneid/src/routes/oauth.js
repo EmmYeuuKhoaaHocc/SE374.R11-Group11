@@ -7,34 +7,67 @@ const { renderLoginPage } = require('../views/renderLogin');
 
 const router = express.Router();
 
+function isValidPkceParams(codeChallenge, codeChallengeMethod) {
+  return (
+    typeof codeChallenge === 'string' &&
+    codeChallenge.trim().length >= 43 &&
+    codeChallengeMethod === 'S256'
+  );
+}
+
+function parseAuthorizeRequest(source) {
+  const codeChallenge = source.code_challenge;
+  const codeChallengeMethod = source.code_challenge_method;
+
+  if (!isValidPkceParams(codeChallenge, codeChallengeMethod)) {
+    return {
+      error: {
+        error: 'invalid_request',
+        error_description: 'PKCE code_challenge and code_challenge_method=S256 are required'
+      }
+    };
+  }
+
+  return {
+    params: {
+      clientId: source.client_id || config.clientId,
+      redirectUri: source.redirect_uri || config.defaultRedirectUri,
+      state: source.state || '',
+      scope: source.scope || 'openid profile cccd bhyt',
+      nonce: source.nonce || '',
+      codeChallenge,
+      codeChallengeMethod
+    }
+  };
+}
+
 router.get('/oauth/authorize', (req, res) => {
-  const { client_id, redirect_uri, state, scope, nonce } = req.query;
+  const parsed = parseAuthorizeRequest(req.query);
+  if (parsed.error) {
+    return res.status(400).json(parsed.error);
+  }
+
   const html = renderLoginPage({
-    clientId: client_id || config.clientId,
-    redirectUri: redirect_uri || config.defaultRedirectUri,
-    state: state || '',
-    scope: scope || 'openid profile cccd bhyt',
-    nonce: nonce || '',
+    ...parsed.params,
     citizens: store.getCitizens(),
     practitioners: store.getPractitioners(),
     facilities: store.getFacilities()
   });
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.send(html);
+  return res.send(html);
 });
 
 router.post('/oauth/authorize', (req, res) => {
-  const { cccd, client_id, redirect_uri, state, scope, nonce } = req.body;
-  const targetRedirect = redirect_uri || config.defaultRedirectUri;
+  const parsed = parseAuthorizeRequest(req.body);
+  if (parsed.error) {
+    return res.status(400).json(parsed.error);
+  }
 
-  const citizen = store.findCitizen((cccd || '').trim());
+  const cccd = (req.body.cccd || '').trim();
+  const citizen = store.findCitizen(cccd);
   if (!citizen) {
     const html = renderLoginPage({
-      clientId: client_id || config.clientId,
-      redirectUri: targetRedirect,
-      state: state || '',
-      scope: scope || '',
-      nonce: nonce || '',
+      ...parsed.params,
       citizens: store.getCitizens(),
       practitioners: store.getPractitioners(),
       facilities: store.getFacilities(),
@@ -45,17 +78,13 @@ router.post('/oauth/authorize', (req, res) => {
 
   const record = store.createAuthCode({
     citizen,
-    clientId: client_id || config.clientId,
-    redirectUri: targetRedirect,
-    scope,
-    state,
-    nonce
+    ...parsed.params
   });
 
-  const redirectUrl = new URL(targetRedirect);
+  const redirectUrl = new URL(parsed.params.redirectUri);
   redirectUrl.searchParams.set('code', record.code);
-  if (state) {
-    redirectUrl.searchParams.set('state', state);
+  if (parsed.params.state) {
+    redirectUrl.searchParams.set('state', parsed.params.state);
   }
 
   return res.redirect(302, redirectUrl.toString());
@@ -66,6 +95,8 @@ router.post('/oauth/token', async (req, res) => {
   const code = req.body.code || req.query.code;
   const clientId = req.body.client_id || req.query.client_id;
   const clientSecret = req.body.client_secret || req.query.client_secret;
+  const redirectUri = req.body.redirect_uri || req.query.redirect_uri;
+  const codeVerifier = req.body.code_verifier || req.query.code_verifier;
 
   if (grantType !== 'authorization_code') {
     return res.status(400).json({
@@ -81,6 +112,13 @@ router.post('/oauth/token', async (req, res) => {
     });
   }
 
+  if (!codeVerifier) {
+    return res.status(400).json({
+      error: 'invalid_request',
+      error_description: 'Missing PKCE code_verifier parameter'
+    });
+  }
+
   if (clientSecret && clientSecret !== config.clientSecret) {
     return res.status(401).json({
       error: 'invalid_client',
@@ -93,6 +131,27 @@ router.post('/oauth/token', async (req, res) => {
     return res.status(400).json({
       error: 'invalid_grant',
       error_description: 'Authorization code is invalid or has expired'
+    });
+  }
+
+  if (clientId && clientId !== record.clientId) {
+    return res.status(400).json({
+      error: 'invalid_grant',
+      error_description: 'client_id mismatch'
+    });
+  }
+
+  if (!redirectUri || redirectUri !== record.redirectUri) {
+    return res.status(400).json({
+      error: 'invalid_grant',
+      error_description: 'redirect_uri mismatch'
+    });
+  }
+
+  if (!store.verifyPkce(record, codeVerifier)) {
+    return res.status(400).json({
+      error: 'invalid_grant',
+      error_description: 'PKCE code_verifier verification failed'
     });
   }
 
@@ -172,6 +231,7 @@ router.get('/.well-known/openid-configuration', (req, res) => {
     response_types_supported: ['code'],
     subject_types_supported: ['public'],
     id_token_signing_alg_values_supported: ['RS256'],
+    code_challenge_methods_supported: ['S256'],
     scopes_supported: ['openid', 'profile', 'cccd', 'bhyt']
   });
 });
