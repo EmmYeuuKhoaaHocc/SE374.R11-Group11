@@ -93,10 +93,35 @@ services:
       PORT: 8000
       DEVICE: cpu
       MODEL_WEIGHTS_PATH: weights/unet3d_final_fp32.pth
+      RABBITMQ_HOST: ${RABBITMQ_HOST:-}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_USER: ${RABBITMQ_USER:-}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:-}
     volumes:
       - ./apps/worker:/app
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: neuroscan_rabbitmq
+    restart: unless-stopped
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MGMT_PORT:-15672}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:?Pass RABBITMQ_USER via CLI or untracked .env}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:?Pass RABBITMQ_PASS via CLI or untracked .env}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit max_message_size 536870912"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
   redis_data:
   seaweedfs_data:
+  rabbitmq_data:
