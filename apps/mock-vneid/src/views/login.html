@@ -160,9 +160,28 @@
       border-radius: 6px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
       z-index: 100;
-      max-height: 240px;
+      max-height: 320px;
       overflow-y: auto;
       display: none;
+    }
+    .combobox-search {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      padding: 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      z-index: 1;
+    }
+    .combobox-search input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 13px;
+      outline: none;
+    }
+    .combobox-search input:focus {
+      border-color: #d71920;
     }
     .combobox-dropdown.open {
       display: block;
@@ -253,7 +272,7 @@
               name="cccd"
               maxLength="12"
               placeholder="Số định danh cá nhân"
-              value="001200012345"
+              value="001200099999"
               required
               class="text-input"
             />
@@ -264,6 +283,9 @@
             </button>
 
             <div class="combobox-dropdown" id="combobox_menu">
+              <div class="combobox-search">
+                <input type="text" id="combobox_filter" placeholder="Tìm tên, CCCD, CCHN, mã chức danh (V.08...) hoặc mã BV..." />
+              </div>
               {{DROPDOWN_ITEMS}}
             </div>
           </div>
@@ -331,6 +353,7 @@
     const passInput = document.getElementById('password');
     const toggleComboboxBtn = document.getElementById('btn_toggle_combobox');
     const comboboxMenu = document.getElementById('combobox_menu');
+    const comboboxFilter = document.getElementById('combobox_filter');
     const toggleEyeBtn = document.getElementById('btn_toggle_eye');
 
     userInput.addEventListener('focus', () => userWrap.classList.add('focused'));
@@ -342,7 +365,21 @@
     toggleComboboxBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       comboboxMenu.classList.toggle('open');
+      if (comboboxMenu.classList.contains('open') && comboboxFilter) {
+        comboboxFilter.focus();
+      }
     });
+
+    if (comboboxFilter) {
+      comboboxFilter.addEventListener('click', (e) => e.stopPropagation());
+      comboboxFilter.addEventListener('input', () => {
+        const q = comboboxFilter.value.trim().toLowerCase();
+        document.querySelectorAll('.combobox-item').forEach(item => {
+          const hay = item.getAttribute('data-search') || '';
+          item.style.display = !q || hay.includes(q) ? '' : 'none';
+        });
+      });
+    }
 
     document.querySelectorAll('.combobox-item').forEach(item => {
       item.addEventListener('click', () => {

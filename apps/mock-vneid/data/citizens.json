@@ -68,5 +68,455 @@
     "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
     "so_the_bhyt": "HT2484821566666",
     "muc_huong_bhyt": 95
+  },
+  {
+    "cccd": "001200048001",
+    "ho_va_ten": "BS. ĐẶNG QUỐC BẢO",
+    "ngay_sinh": "1976-04-18",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0905123401",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821548001",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000001",
+    "ho_va_ten": "BS. PHẠM MINH DŨNG",
+    "ngay_sinh": "1973-02-04",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910001357",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500001",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000002",
+    "ho_va_ten": "BS. VŨ MINH THẢO",
+    "ngay_sinh": "1974-03-07",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910002714",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500002",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000003",
+    "ho_va_ten": "BS. ĐỖ HOÀNG HIẾU",
+    "ngay_sinh": "1975-04-10",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910004071",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500003",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000004",
+    "ho_va_ten": "BS. NGUYỄN HỒNG LAN",
+    "ngay_sinh": "1976-05-13",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910005428",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500004",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000005",
+    "ho_va_ten": "BS. HOÀNG ĐỨC KHOA",
+    "ngay_sinh": "1977-06-16",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910006785",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500005",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000006",
+    "ho_va_ten": "BS. VÕ PHƯƠNG ANH",
+    "ngay_sinh": "1978-07-19",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910008142",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500006",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000007",
+    "ho_va_ten": "YS. HỒ TUẤN BÌNH",
+    "ngay_sinh": "1979-08-22",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910009499",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500007",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000008",
+    "ho_va_ten": "BS. TRẦN NGỌC LINH",
+    "ngay_sinh": "1980-09-25",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910010856",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500008",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000009",
+    "ho_va_ten": "BS. HUỲNH MINH SƠN",
+    "ngay_sinh": "1981-10-28",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910012213",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500009",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000010",
+    "ho_va_ten": "BS. ĐẶNG THANH NHUNG",
+    "ngay_sinh": "1982-11-03",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910013570",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500010",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000011",
+    "ho_va_ten": "BS. NGÔ HOÀNG DŨNG",
+    "ngay_sinh": "1983-12-06",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910014927",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500011",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000012",
+    "ho_va_ten": "BS. LÊ KIM THẢO",
+    "ngay_sinh": "1984-01-09",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910016284",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500012",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000013",
+    "ho_va_ten": "BS. PHAN ĐỨC HIẾU",
+    "ngay_sinh": "1985-02-12",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910017641",
+    "dia_chi_thuong_tru": "Phường 12, Quận 5, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500013",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000014",
+    "ho_va_ten": "BS. HỒ THỊ THẢO",
+    "ngay_sinh": "1986-03-15",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910018998",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500014",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000015",
+    "ho_va_ten": "BS. TRẦN TUẤN HIẾU",
+    "ngay_sinh": "1987-04-18",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910020355",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500015",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000016",
+    "ho_va_ten": "BS. HUỲNH MINH LAN",
+    "ngay_sinh": "1988-05-21",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910021712",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500016",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000017",
+    "ho_va_ten": "YS. ĐẶNG MINH KHOA",
+    "ngay_sinh": "1989-06-24",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910023069",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500017",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000018",
+    "ho_va_ten": "BS. NGÔ HỒNG ANH",
+    "ngay_sinh": "1990-07-27",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910024426",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500018",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000019",
+    "ho_va_ten": "BS. LÊ HOÀNG BÌNH",
+    "ngay_sinh": "1991-08-02",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910025783",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500019",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000020",
+    "ho_va_ten": "BS. PHAN PHƯƠNG LINH",
+    "ngay_sinh": "1992-09-05",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910027140",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500020",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000021",
+    "ho_va_ten": "BS. BÙI ĐỨC SƠN",
+    "ngay_sinh": "1993-10-08",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910028497",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500021",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000022",
+    "ho_va_ten": "BS. DƯƠNG NGỌC NHUNG",
+    "ngay_sinh": "1994-11-11",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910029854",
+    "dia_chi_thuong_tru": "Phường Phương Mai, Quận Đống Đa, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500022",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000023",
+    "ho_va_ten": "BS. ĐẶNG TUẤN KHOA",
+    "ngay_sinh": "1995-12-14",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910031211",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500023",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000024",
+    "ho_va_ten": "BS. NGÔ THANH ANH",
+    "ngay_sinh": "1972-01-17",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910032568",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500024",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000025",
+    "ho_va_ten": "YS. LÊ MINH BÌNH",
+    "ngay_sinh": "1973-02-20",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910033925",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500025",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000026",
+    "ho_va_ten": "BS. PHAN KIM LINH",
+    "ngay_sinh": "1974-03-23",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910035282",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500026",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000027",
+    "ho_va_ten": "BS. BÙI HOÀNG SƠN",
+    "ngay_sinh": "1975-04-26",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910036639",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500027",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000028",
+    "ho_va_ten": "BS. DƯƠNG THỊ NHUNG",
+    "ngay_sinh": "1976-05-01",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910037996",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500028",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000029",
+    "ho_va_ten": "BS. PHẠM ĐỨC DŨNG",
+    "ngay_sinh": "1977-06-04",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910039353",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500029",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000030",
+    "ho_va_ten": "BS. VŨ MINH THẢO",
+    "ngay_sinh": "1978-07-07",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910040710",
+    "dia_chi_thuong_tru": "Phường 12, Quận 10, TP. Hồ Chí Minh",
+    "so_the_bhyt": "DN4797921500030",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000031",
+    "ho_va_ten": "BS. PHẠM TUẤN DŨNG",
+    "ngay_sinh": "1979-08-10",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910042067",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500031",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000032",
+    "ho_va_ten": "BS. VŨ HỒNG THẢO",
+    "ngay_sinh": "1980-09-13",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910043424",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500032",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000033",
+    "ho_va_ten": "BS. ĐỖ MINH HIẾU",
+    "ngay_sinh": "1981-10-16",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910044781",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500033",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000034",
+    "ho_va_ten": "BS. NGUYỄN PHƯƠNG LAN",
+    "ngay_sinh": "1982-11-19",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910046138",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500034",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000035",
+    "ho_va_ten": "BS. HOÀNG HOÀNG KHOA",
+    "ngay_sinh": "1983-12-22",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910047495",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500035",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000036",
+    "ho_va_ten": "YS. VÕ NGỌC ANH",
+    "ngay_sinh": "1984-01-25",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910048852",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500036",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000037",
+    "ho_va_ten": "BS. HỒ ĐỨC BÌNH",
+    "ngay_sinh": "1985-02-28",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910050209",
+    "dia_chi_thuong_tru": "Phường Hàng Bông, Quận Hoàn Kiếm, TP. Hà Nội",
+    "so_the_bhyt": "DN4010121500037",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000038",
+    "ho_va_ten": "BS. ĐẶNG THANH NHUNG",
+    "ngay_sinh": "1986-03-03",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910051566",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500038",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000039",
+    "ho_va_ten": "BS. NGÔ TUẤN DŨNG",
+    "ngay_sinh": "1987-04-06",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910052923",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500039",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000040",
+    "ho_va_ten": "BS. LÊ KIM THẢO",
+    "ngay_sinh": "1988-05-09",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910054280",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500040",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000041",
+    "ho_va_ten": "BS. PHAN MINH HIẾU",
+    "ngay_sinh": "1989-06-12",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910055637",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500041",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000042",
+    "ho_va_ten": "BS. BÙI THỊ LAN",
+    "ngay_sinh": "1990-07-15",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910056994",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500042",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000043",
+    "ho_va_ten": "YS. DƯƠNG HOÀNG KHOA",
+    "ngay_sinh": "1991-08-18",
+    "gioi_tinh": "Nam",
+    "so_dien_thoai": "0910058351",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500043",
+    "muc_huong_bhyt": 80
+  },
+  {
+    "cccd": "001201000044",
+    "ho_va_ten": "BS. PHẠM MINH ANH",
+    "ngay_sinh": "1992-09-21",
+    "gioi_tinh": "Nữ",
+    "so_dien_thoai": "0910059708",
+    "dia_chi_thuong_tru": "Phường Thạch Thang, Quận Hải Châu, TP. Đà Nẵng",
+    "so_the_bhyt": "DN4484821500044",
+    "muc_huong_bhyt": 80
   }
 ]

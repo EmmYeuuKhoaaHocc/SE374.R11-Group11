@@ -27,9 +27,15 @@ router.get('/api/v1/byt/practitioner/:cchn(*)', (req, res) => {
 });
 
 router.get('/api/v1/byt/practitioners', (req, res) => {
+  const maCskcb = (req.query.ma_cskcb || '').toString().trim();
+  const all = store.getPractitioners();
+  const filtered = maCskcb
+    ? all.filter(p => p.ma_cskcb_cong_tac === maCskcb)
+    : all;
+
   return res.json({
-    total: store.getPractitioners().length,
-    practitioners: store.getPractitioners()
+    total: filtered.length,
+    practitioners: filtered
   });
 });
 

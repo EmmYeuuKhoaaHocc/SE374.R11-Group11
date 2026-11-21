@@ -174,10 +174,14 @@ router.post('/oauth/token', async (req, res) => {
     baseClaims.cchn = practitioner.ma_cchn;
     baseClaims.facility_id = practitioner.ma_cskcb_cong_tac;
     baseClaims.scope_of_practice = practitioner.pham_vi_hoat_dong;
+    baseClaims.ma_chuc_danh = practitioner.ma_chuc_danh || null;
+    baseClaims.ten_chuc_danh = practitioner.ten_chuc_danh || null;
     baseClaims.practitioner = {
       cchn: practitioner.ma_cchn,
       facility_id: practitioner.ma_cskcb_cong_tac,
       scope_of_practice: practitioner.pham_vi_hoat_dong,
+      ma_chuc_danh: practitioner.ma_chuc_danh || null,
+      ten_chuc_danh: practitioner.ten_chuc_danh || null,
       status: practitioner.trang_thai
     };
   }
