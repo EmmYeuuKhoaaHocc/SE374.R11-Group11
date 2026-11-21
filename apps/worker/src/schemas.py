@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class HealthResponse(BaseModel):
     status: str
     model_loaded: bool
+    model_version: str = "v1.0.0"
     device: str
     weights_path: str
     rabbitmq_enabled: bool = False

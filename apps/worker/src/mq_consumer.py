@@ -2,6 +2,8 @@ import asyncio
 import base64
 import json
 import logging
+import os
+import socket
 import time
 from typing import Any, Dict, Optional
 
@@ -11,6 +13,7 @@ from aiormq.exceptions import ChannelPreconditionFailed
 
 from .config import settings
 from .inference import inference_engine
+from .s3_client import s3_downloader
 
 logger = logging.getLogger("neuroscan.worker.mq")
 
@@ -26,7 +29,9 @@ class RabbitMqInferenceConsumer:
         self._retry_exchange: Optional[aio_pika.abc.AbstractExchange] = None
         self._pub_lock = asyncio.Lock()
         self._consumer_tag: Optional[str] = None
+        self._reload_consumer_tag: Optional[str] = None
         self._queue: Optional[aio_pika.abc.AbstractQueue] = None
+        self._reload_queue: Optional[aio_pika.abc.AbstractQueue] = None
         self._connect_task: Optional[asyncio.Task] = None
         self._stopping = False
         self.connected = False
@@ -165,11 +170,23 @@ class RabbitMqInferenceConsumer:
                 await self._queue.bind(main_exchange, routing_key=settings.RABBITMQ_REQUEST_ROUTING_KEY)
                 self._consumer_tag = await self._queue.consume(self._on_message)
 
+                # Per-worker exclusive queue bound to model.reload so all workers reload atomically
+                reload_q_name = f"neuroscan.worker.reload.{socket.gethostname()}.{os.getpid()}"
+                self._reload_queue = await self._channel.declare_queue(
+                    reload_q_name,
+                    durable=False,
+                    exclusive=True,
+                    auto_delete=True,
+                )
+                await self._reload_queue.bind(main_exchange, routing_key=settings.RABBITMQ_RELOAD_ROUTING_KEY)
+                self._reload_consumer_tag = await self._reload_queue.consume(self._on_reload_message)
+
                 self.connected = True
                 self.last_error = None
                 logger.info(
-                    "RabbitMQ worker listening on '%s' (retry='%s' [%dms, max=%d], dlq='%s')",
+                    "RabbitMQ worker listening on '%s' + reload queue '%s' (retry='%s' [%dms, max=%d], dlq='%s')",
                     settings.RABBITMQ_REQUEST_QUEUE,
+                    reload_q_name,
                     self.request_retry_queue_name,
                     settings.RABBITMQ_RETRY_DELAY_MS,
                     settings.RABBITMQ_MAX_RETRIES,
@@ -448,6 +465,41 @@ class RabbitMqInferenceConsumer:
         finally:
             if task_id:
                 inference_engine.cleanup_task_masks(task_id)
+
+    async def _on_reload_message(self, message: aio_pika.abc.AbstractIncomingMessage) -> None:
+        try:
+            payload = json.loads(message.body.decode("utf-8"))
+            version = str(payload.get("version", "")).strip()
+            weights_bucket = str(payload.get("weights_s3_bucket", settings.S3_MODELS_BUCKET)).strip()
+            weights_key = str(payload.get("weights_s3_key", "")).strip()
+            calib_bucket = str(payload.get("calibration_s3_bucket", settings.S3_MODELS_BUCKET)).strip()
+            calib_key = str(payload.get("calibration_s3_key", "")).strip()
+
+            if not version or not weights_key or not calib_key:
+                logger.warning("Ignoring incomplete model.reload message: %s", payload)
+                await message.ack()
+                return
+
+            if not s3_downloader.is_configured:
+                logger.warning(
+                    "Received model.reload for version='%s', but S3_ENDPOINT is not configured; cannot download new weights.",
+                    version,
+                )
+                await message.ack()
+                return
+
+            target_dir = inference_engine.hot_reload_dir / version
+            weights_dest = target_dir / "model.pth"
+            calib_dest = target_dir / "calibration_cache.json"
+
+            await asyncio.to_thread(s3_downloader.download_file, weights_bucket, weights_key, weights_dest)
+            await asyncio.to_thread(s3_downloader.download_file, calib_bucket, calib_key, calib_dest)
+            await asyncio.to_thread(inference_engine.reload_from_paths, version, weights_dest, calib_dest)
+            await message.ack()
+            logger.info("Worker hot-reloaded cleanly to ModelVersion '%s'", version)
+        except Exception:
+            logger.exception("Failed handling model.reload event")
+            await message.nack(requeue=False)
 
 
 mq_consumer = RabbitMqInferenceConsumer()

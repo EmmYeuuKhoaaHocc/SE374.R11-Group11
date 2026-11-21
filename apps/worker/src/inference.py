@@ -1,3 +1,4 @@
+import json
 import io
 import os
 import uuid
@@ -10,22 +11,28 @@ import numpy as np
 from scipy import ndimage
 import torch
 
+from manager import ModelManager, enable_mc_dropout
 from .config import settings
 from .model import ResidualUNet3D
 from .calibration import calibration_manager
 
-def enable_mc_dropout(model: torch.nn.Module) -> None:
-    model.eval()
-    for m in model.modules():
-        if isinstance(m, (torch.nn.Dropout, torch.nn.Dropout2d, torch.nn.Dropout3d)):
-            m.train()
 
 class InferenceEngine:
     def __init__(self):
-        self.model: ResidualUNet3D | None = None
+        self.model_manager = ModelManager()
         self.device = self._resolve_device()
         self.temp_dir = Path(__file__).resolve().parent.parent / "temp"
         self.temp_dir.mkdir(parents=True, exist_ok=True)
+        self.hot_reload_dir = Path(__file__).resolve().parent.parent / "weights" / "hot_reload"
+        self.hot_reload_dir.mkdir(parents=True, exist_ok=True)
+
+    @property
+    def model(self) -> ResidualUNet3D | None:
+        return self.model_manager.model
+
+    @property
+    def current_version(self) -> str:
+        return self.model_manager.current_version
 
     def _resolve_device(self) -> torch.device:
         target = settings.DEVICE.lower()
@@ -36,29 +43,35 @@ class InferenceEngine:
         return torch.device("cpu")
 
     def load_model(self) -> None:
-        model = ResidualUNet3D(
-            in_channels=4,
-            num_classes=4,
-            features=(16, 32, 64, 128),
-            bottleneck=256,
-            dropout=0.2
-        )
         weights_path = Path(settings.MODEL_WEIGHTS_PATH)
         if not weights_path.exists():
             root_fallback = Path(__file__).resolve().parents[3] / "working_unet3d_final_fp32.pth"
             if root_fallback.exists():
                 weights_path = root_fallback
 
-        if weights_path.exists():
-            checkpoint = torch.load(str(weights_path), map_location=self.device)
-            if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
-                model.load_state_dict(checkpoint["model_state_dict"])
-            elif isinstance(checkpoint, dict):
-                model.load_state_dict(checkpoint)
-        
-        model.to(self.device)
-        enable_mc_dropout(model)
-        self.model = model
+        calib_dict = {"calibration_factors": dict(calibration_manager.cached_factors)}
+        calib_path = Path(settings.CALIBRATION_CACHE_PATH)
+        if calib_path.exists():
+            try:
+                calib_dict = json.loads(calib_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        self.model_manager.hot_reload(
+            new_version=settings.MODEL_VERSION,
+            weights_path=weights_path,
+            calib_dict=calib_dict,
+            device=self.device,
+        )
+
+    def reload_from_paths(self, version: str, weights_path: Path, calib_path: Path) -> None:
+        calib_dict = json.loads(calib_path.read_text(encoding="utf-8"))
+        self.model_manager.hot_reload(
+            new_version=version,
+            weights_path=weights_path,
+            calib_dict=calib_dict,
+            device=self.device,
+        )
 
     @staticmethod
     def p95_normalize(volume: np.ndarray) -> np.ndarray:
@@ -80,7 +93,11 @@ class InferenceEngine:
         num_passes: Optional[int] = None,
         batch_t: Optional[int] = None,
         progress_callback: Optional[Callable[[str, str], None]] = None,
+        active_model: Optional[torch.nn.Module] = None,
     ) -> Dict[str, torch.Tensor]:
+        target_model = active_model if active_model is not None else self.model
+        if target_model is None:
+            raise RuntimeError("No active ResidualUNet3D model loaded for inference.")
         if num_passes is None:
             num_passes = settings.MC_NUM_PASSES
         if batch_t is None:
@@ -128,7 +145,7 @@ class InferenceEngine:
         prob_tc = torch.empty((num_passes, orig_d, orig_h, orig_w), dtype=storage_dtype, device=self.device)
         prob_et = torch.empty((num_passes, orig_d, orig_h, orig_w), dtype=storage_dtype, device=self.device)
 
-        enable_mc_dropout(self.model)
+        enable_mc_dropout(target_model)
 
         with torch.no_grad():
             image_tensor = torch.from_numpy(np.ascontiguousarray(image, dtype=np.float32)).to(self.device)
@@ -155,9 +172,9 @@ class InferenceEngine:
 
                             if is_cuda:
                                 with torch.autocast(device_type="cuda", dtype=torch.float16):
-                                    logits = self.model(tensor)
+                                    logits = target_model(tensor)
                             else:
-                                logits = self.model(tensor)
+                                logits = target_model(tensor)
 
                             probs = torch.softmax(logits.float(), dim=1)
                             prob_accum[:, :, sd:sd + pd, sh:sh + ph, sw:sw + pw].add_(probs)
@@ -360,6 +377,11 @@ class InferenceEngine:
                 f"T1ce={t1ce_data.shape}, T2={t2_data.shape}"
             )
 
+        # Atomically snapshot (model, calibration, version) so hot-reload never disrupts an active case.
+        active_model, factors, active_version = self.model_manager.get_active_artifacts()
+        if active_model is None:
+            raise RuntimeError("Worker model is not loaded yet.")
+
         stacked = np.stack([flair_data, t1_data, t1ce_data, t2_data], axis=0).transpose(0, 3, 1, 2)
         d, h, w = stacked.shape[1], stacked.shape[2], stacked.shape[3]
 
@@ -368,12 +390,12 @@ class InferenceEngine:
             num_passes=num_passes,
             batch_t=batch_t,
             progress_callback=progress_callback,
+            active_model=active_model,
         )
 
         if progress_callback is not None:
             progress_callback("inference_processing", "Computing conformal quantiles on GPU")
 
-        factors = calibration_manager.cached_factors
         a_wt = float(factors.get("a_wt", 1.75))
         a_tc = float(factors.get("a_tc", 2.867))
         a_et = float(factors.get("a_et", 2.6526))
@@ -406,6 +428,7 @@ class InferenceEngine:
 
         return {
             "task_id": task_id,
+            "model_version": active_version,
             "masks": {
                 "p05_url": f"/api/mask/{task_id}?p=5",
                 "p50_url": f"/api/mask/{task_id}?p=50",

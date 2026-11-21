@@ -55,6 +55,9 @@ def _apply_cli_args() -> None:
     parser.add_argument("--rmq-pass", default=None)
     parser.add_argument("--rmq-vhost", default=None)
     parser.add_argument("--rmq-exchange", default=None)
+    parser.add_argument("--s3-endpoint", default=None)
+    parser.add_argument("--s3-access-key", default=None)
+    parser.add_argument("--s3-secret-key", default=None)
     args, _ = parser.parse_known_args()
 
     mapping = {
@@ -67,6 +70,9 @@ def _apply_cli_args() -> None:
         "RABBITMQ_PASS": args.rmq_pass,
         "RABBITMQ_VHOST": args.rmq_vhost,
         "RABBITMQ_EXCHANGE": args.rmq_exchange,
+        "S3_ENDPOINT": args.s3_endpoint,
+        "S3_ACCESS_KEY": args.s3_access_key,
+        "S3_SECRET_KEY": args.s3_secret_key,
     }
     for key, value in mapping.items():
         if value is not None:

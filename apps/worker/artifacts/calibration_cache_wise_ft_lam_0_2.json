@@ -1,0 +1,98 @@
+{
+  "calibration_factors": {
+    "a_wt": 4.0536,
+    "a_tc": 6.3791,
+    "a_et": 7.9916
+  },
+  "validation_details": {
+    "dataset": "wise_ft_lam_0.2_golden_74",
+    "total_cases": 74,
+    "mc_dropout_passes": 20,
+    "method": "Conformal Volumetric Quantile Scaling (3-Fold CV)",
+    "coverage_summary": {
+      "WT": {
+        "cv_mean_coverage_95": 0.9722,
+        "full_val_coverage_95": 0.973
+      },
+      "TC": {
+        "cv_mean_coverage_95": 0.9594,
+        "full_val_coverage_95": 0.973
+      },
+      "ET": {
+        "cv_mean_coverage_95": 0.9715,
+        "full_val_coverage_95": 0.9706
+      }
+    },
+    "folds": {
+      "WT": [
+        {
+          "fold": 1,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 4.0745,
+          "coverage_95": 1.0
+        },
+        {
+          "fold": 2,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 4.0691,
+          "coverage_95": 1.0
+        },
+        {
+          "fold": 3,
+          "train_cases": 50,
+          "val_cases": 24,
+          "slope": 3.8156,
+          "coverage_95": 0.9167
+        }
+      ],
+      "TC": [
+        {
+          "fold": 1,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 7.8086,
+          "coverage_95": 1.0
+        },
+        {
+          "fold": 2,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 5.2073,
+          "coverage_95": 0.92
+        },
+        {
+          "fold": 3,
+          "train_cases": 50,
+          "val_cases": 24,
+          "slope": 6.3693,
+          "coverage_95": 0.9583
+        }
+      ],
+      "ET": [
+        {
+          "fold": 1,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 8.0401,
+          "coverage_95": 0.96
+        },
+        {
+          "fold": 2,
+          "train_cases": 49,
+          "val_cases": 25,
+          "slope": 7.9751,
+          "coverage_95": 0.9545
+        },
+        {
+          "fold": 3,
+          "train_cases": 50,
+          "val_cases": 24,
+          "slope": 10.135,
+          "coverage_95": 1.0
+        }
+      ]
+    }
+  }
+}

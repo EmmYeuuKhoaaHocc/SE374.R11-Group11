@@ -1,12 +1,15 @@
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     APP_NAME: str = "Brain Tumor 3D UNet Worker"
     HOST: str = "0.0.0.0"
     PORT: int = 8000
     DEBUG: bool = False
     MODEL_WEIGHTS_PATH: str = str(Path(__file__).resolve().parent.parent / "weights" / "unet3d_final_fp32.pth")
+    CALIBRATION_CACHE_PATH: str = str(Path(__file__).resolve().parent / "calibration_cache.json")
+    MODEL_VERSION: str = "v1.0.0"
     DEVICE: str = "cuda"
     PATCH_DEPTH: int = 128
     PATCH_HEIGHT: int = 128
@@ -26,14 +29,22 @@ class Settings(BaseSettings):
     RABBITMQ_EXCHANGE: str = "neuroscan.inference"
     RABBITMQ_REQUEST_QUEUE: str = "neuroscan.inference.requests"
     RABBITMQ_REQUEST_ROUTING_KEY: str = "inference.request"
+    RABBITMQ_RELOAD_ROUTING_KEY: str = "model.reload"
     RABBITMQ_MAX_RETRIES: int = 3
     RABBITMQ_RETRY_DELAY_MS: int = 5000
+
+    # SeaweedFS S3 (used for downloading hot-reloaded weights on model.reload)
+    S3_ENDPOINT: str = ""
+    S3_ACCESS_KEY: str = "any"
+    S3_SECRET_KEY: str = "any"
+    S3_REGION: str = "us-east-1"
+    S3_MODELS_BUCKET: str = "neuroscan-models"
 
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
-        "extra": "ignore"
+        "extra": "ignore",
     }
 
-settings = Settings()
 
+settings = Settings()

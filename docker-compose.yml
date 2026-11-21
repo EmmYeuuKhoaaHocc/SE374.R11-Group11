@@ -60,7 +60,11 @@ services:
       sleep 2;
       wget -q -O - --post-data='' http://seaweedfs:8888/buckets/neuroscan-scans/ || true;
       wget -q -O - --post-data='' http://seaweedfs:8888/buckets/neuroscan-masks/ || true;
-      echo 'SeaweedFS buckets neuroscan-scans and neuroscan-masks initialized.';
+      wget -q -O - --post-data='' http://seaweedfs:8888/buckets/train_data_v1/ || true;
+      wget -q -O - --post-data='' http://seaweedfs:8888/buckets/val_data/ || true;
+      wget -q -O - --post-data='' http://seaweedfs:8888/buckets/neuroscan-training/ || true;
+      wget -q -O - --post-data='' http://seaweedfs:8888/buckets/neuroscan-models/ || true;
+      echo 'SeaweedFS buckets initialized (scans, masks, train_data_v1, val_data, training, models).';
       exit 0;
       "
 
